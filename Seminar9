@@ -1,6 +1,6 @@
-import telebot
+mport telebot
 from telebot import types
-import time
+import datetime
 
 
 bot = telebot.TeleBot("5983003991:AAGRDIe83UeLj7ID6hYAVA3Dm_vmqMtjU68")
@@ -27,7 +27,7 @@ def controller(message):
         bot.send_message(message.chat.id,"Введи имя фамилию")
         bot.register_next_step_handler(message,sentence)
     elif message.text == "Узнать время":
-        bot.send_message(message.chat.id,f"текущее время - {time.time()}")
+        bot.send_message(message.chat.id,f"текущее время - {datetime.datetime.now()}")
         button(message)
 
 def sentence(message):
