@@ -1,0 +1,40 @@
+import telebot
+from telebot import types
+import time
+
+
+bot = telebot.TeleBot("5983003991:AAGRDIe83UeLj7ID6hYAVA3Dm_vmqMtjU68")
+
+@bot.message_handler(commands = ["start"])
+def start(message):
+    # bot.send_message(message.chat.id,"/button\n/start")
+    bot.send_message(message.chat.id,"/button")
+
+# bot.message_handler(commands = ["button"])
+@bot.message_handler(commands = ["button"])
+def button(message):
+    markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    but1 = types.KeyboardButton("Сделать предложение")
+    but2 = types.KeyboardButton("Узнать время")
+    markup.add(but1)
+    markup.add(but2)
+    bot.send_message(message.chat.id,"Выбери ниже",reply_markup=markup)
+
+
+@bot.message_handler(content_types= ["text"])
+def controller(message):
+    if message.text == "Сделать предложение":
+        bot.send_message(message.chat.id,"Введи имя фамилию")
+        bot.register_next_step_handler(message,sentence)
+    elif message.text == "Узнать время":
+        bot.send_message(message.chat.id,f"текущее время - {time.time()}")
+        button(message)
+
+def sentence(message):
+    text = message.text
+    surname = text.split()[0]
+    name = text.split()[1]
+    bot.send_message(message.chat.id,f"Вас зовут - {name}, Фамилия - {surname}")
+    button(message)
+
+bot.infinity_polling()
